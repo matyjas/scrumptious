@@ -1,11 +1,11 @@
 function(head, req)
 {
-	// !json templates.index
-	// !code lib/mustache.js
 
+        var ddoc = this;
 	var path = require("vendor/couchapp/lib/path").init(req);
 	var dateiso = require("vendor/date/date-iso8601rfc3339");
 	var datefmt = require("vendor/date/date.format");
+	var mustache = require("lib/mustache-s");
 
 	provides("html", function() {
 		var row;
@@ -15,7 +15,7 @@ function(head, req)
 			nextkey: "0"
 		};
 
-		send(Mustache.to_html(templates.index.head, data));
+		send(mustache.to_html(ddoc.templates.index.head, data));
 
 		while(row = getRow()) {
 
@@ -24,7 +24,7 @@ function(head, req)
 
 			data.nextkey = row.value.id;
 
-			send(Mustache.to_html(templates.index.row, {
+			send(mustache.to_html(ddoc.templates.index.row, {
 				url: row.value.url,
 				date: dt.format('dd-mmm-yy'),
 				id: row.value.id,
@@ -38,10 +38,10 @@ function(head, req)
 					return 0;
 				           }),
 				bytag: path.list('ls', 'bytag'),
-				show: path.show('bookmark', row.value.id),
+				show: path.show('bookmark', row.value.id)
 
 			}));
 		}
-		send(Mustache.to_html(templates.index.tail, data));
+		send(mustache.to_html(ddoc.templates.index.tail, data));
 	});
 }

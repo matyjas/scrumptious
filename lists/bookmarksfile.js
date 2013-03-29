@@ -1,20 +1,19 @@
 function(head, req)
 {
-	// !json templates.bookmarksfile
-	// !code lib/mustache.js
-
+        var ddoc = this;
 	var path = require("vendor/couchapp/lib/path").init(req);
 	var dateiso = require("vendor/date/date-iso8601rfc3339");
 	var datefmt = require("vendor/date/date.format");
+	var mustache = require("lib/mustache-s");
 
 	provides("html", function() {
 		var row;
 
 		var data = {
-			title: "Scrumptious Bookmarks",
+			title: "Scrumptious Bookmarks"
 		};
 
-		send(Mustache.to_html(templates.bookmarksfile.head, data));
+		send(mustache.to_html(ddoc.templates.bookmarksfile.head, data));
 
 		while(row = getRow()) {
 
@@ -22,13 +21,13 @@ function(head, req)
 			dt.setISO8601(row.value.date);
 			var timestamp = dt.getTime() / 1000;
 
-			send(Mustache.to_html(templates.bookmarksfile.row, {
+			send(mustache.to_html(ddoc.templates.bookmarksfile.row, {
 				url: row.value.url,
 				date: timestamp,
 				desc: row.value.desc,
 				title: row.value.title
 			}));
 		}
-		send(Mustache.to_html(templates.bookmarksfile.tail, data));
+		send(mustache.to_html(ddoc.templates.bookmarksfile.tail, data));
 	});
 }

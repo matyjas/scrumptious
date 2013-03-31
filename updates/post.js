@@ -1,7 +1,6 @@
 function(doc, req)
 {
-	//!code vendor/date/date.js
-
+        var dateDate = require("vendor/date/date");
 	var path = require("vendor/couchapp/lib/path").init(req);
 
 	log(JSON.stringify(req));
